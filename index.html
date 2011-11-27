@@ -1,0 +1,32 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>FernetJS Invaders</title>
+        <script type="text/javascript" src="scripts/jquery-1.6.4.min.js"></script>
+        
+        <script type="text/javascript" src="scripts/classes/static.js"></script>
+        <script type="text/javascript" src="scripts/classes/imageCreator.js"></script>
+        <script type="text/javascript" src="scripts/classes/shoot.js"></script>
+        <script type="text/javascript" src="scripts/classes/ship.js"></script>
+        <script type="text/javascript" src="scripts/classes/invasion.js"></script>
+        <script type="text/javascript" src="scripts/classes/alien.js"></script>
+        <script type="text/javascript" src="scripts/classes/brick.js"></script>
+        <script type="text/javascript" src="scripts/classes/shield.js"></script>
+        <script type="text/javascript" src="scripts/classes/invaders.js"></script>
+        
+        <script type="text/javascript">
+        	$(document).ready(function(){
+        		var invaders = new Invaders();
+        		invaders.start();
+        	});
+        </script>
+    </head>
+    <body>
+        <h1>FernetJS Invaders!</h1>
+        <canvas id="canvas" width="600" height="400" style="border: solid 1px silver; background-color:#000">
+        	Space Invasor!
+        </canvas>
+    </body>
+</html>
