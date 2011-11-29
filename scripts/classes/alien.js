@@ -17,14 +17,20 @@ function Alien(options){
 		
 	this.state = options.initState;
 	this.images = options.stateImgs;
+	this.destroyedImg = options.destroyedImg;
 	this.onDestroy = options.onDestroy;
+	this.onWallCollision = options.onWallCollision;
 	
 	this.destroyed = false;
 	this.shoots = [];
 }
 
-Alien.prototype.update = function(shoot, shield){
-	this.state = !this.state;
+Alien.prototype.update = function(state, shoot, shield, ship){
+	this.state = state;
+	
+	var sX = this.position.x;
+	if (sX < 20 || sX > (590 - this.size.width))
+		this.onWallCollision();
 	
 	if (shoot){
 		var self = this;
@@ -42,7 +48,8 @@ Alien.prototype.update = function(shoot, shield){
 					}
 				}
 			},
-			collateBricks: shield.bricks 
+			collateBricks: shield.bricks,
+			collateAliens: [ship]
 		});
 		
 		this.shoots.push(s);
@@ -55,18 +62,22 @@ Alien.prototype.hasCollision = function(){
 }
 
 Alien.prototype.draw = function(){	
+	for(var i=0; i<this.shoots.length; i++){
+		this.shoots[i].draw();
+	}
+	
 	if (!this.destroyed){
 		var idx = (this.state) ? 0: 1;	
 		this.ctx.drawImage(this.images[idx], 0, 0, this.size.width, this.size.height,
 	                        this.position.x, this.position.y, this.size.width, this.size.height);
 	}
-	
-	for(var i=0; i<this.shoots.length; i++){
-		this.shoots[i].draw();
+	else {
+		this.ctx.drawImage(this.destroyedImg[0], 0, 0, this.size.width, this.size.height,
+	                        this.position.x, this.position.y, this.size.width, this.size.height);       
+		this.onDestroy(this);
 	}
 }
 
 Alien.prototype.destroy = function(){
 	this.destroyed = true;
-	this.onDestroy(this);
 }

@@ -36,7 +36,7 @@ function Ship(options){
 	console.log(this.size.height);
 	
 	this.shield = options.shield;
-	this.invasion = options.invasion;
+	this.invasion = {};
 }
 
 Ship.prototype.update = function(actions){
@@ -70,7 +70,7 @@ Ship.prototype.update = function(actions){
 	var shootIdx = $.inArray(Controls.Shoot, actions);
 	if (shootIdx>-1 && this.shoots.length === 0){
        	actions.splice(shootIdx, 1);
-        
+                
         var self = this;
         
 		var s = new Shoot({
@@ -160,3 +160,6 @@ Ship.prototype.getShipMap = function(){
 	];
 }
 
+Ship.prototype.destroy = function(){
+	alert('BOOM!');
+}

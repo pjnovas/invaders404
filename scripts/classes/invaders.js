@@ -32,21 +32,23 @@ Invaders.prototype.start = function(){
 	
 	var cnvW = this.canvas.width;
        
-	this.invasion = new Invasion({
-		ctx: this.ctx,
-		x: 20,
-		y: 10,
-		shield: this.shield
-	});
-	
-	this.ship = new Ship({
+    this.ship = new Ship({
 		ctx: this.ctx,
 		shield: this.shield,
 		maxMoveLeft: 5,
 		maxMoveRight: cnvW-10,
-		y: 370,
-		invasion: this.invasion
+		y: 370
 	});
+	
+	this.invasion = new Invasion({
+		ctx: this.ctx,
+		x: 20,
+		y: 10,
+		shield: this.shield,
+		ship: this.ship
+	});
+	
+	this.ship.invasion = this.invasion;
 	
 	this.currentDir = [];
 	

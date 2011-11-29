@@ -16,68 +16,64 @@ function Invasion(options){
 	};
 	
 	this.shield = options.shield;
+	this.ship = options.ship;
 	
 	this.MOVE_FACTOR = 10;
 	this.DOWN_FACTOR = 5;
-	this.VEL_FACTOR = 500;
+	this.CURR_VEL = 600;
+	this.VEL_FACTOR = 50;
 	
 	this.dir = 1;
+	this.lastDir = 1;
+	this.lastPer = 100;
+	
+	this.state = 0;
 	
 	this.alienSize = 30;
 	this.aliens = [];
 		
 	this.crabImages = [];
 	this.squidImages = [];
-	
+	this.deadAlienImgs = [];
+
 	this.build();
-	this.update();
 	
-	//this.onDestroy = options.onDestroy;
+	this.aliensAmm = this.aliens.length; 
+	this.hadAlienCollision = false;
+	
+	this.update();
 	
 	//this.collateBricks = options.collateBricks;
 }
 
 Invasion.prototype.update = function(){
+	this.state = !this.state;
 	
 	var vel = this.MOVE_FACTOR;
 	var hMove = 0;
 	var vMove = 0;
 
-	var sX = this.position.x;
+	var arr = this.aliens;
+	var arrLen = arr.length;
 	
-	if (sX < 20 || sX > (590 - this.size.width)){
+	if (this.hadAlienCollision){//this.dir !== this.lastDir){
 		this.dir *= -1;
+		this.hadAlienCollision = false;
 		
-		//TODO: check aliens ammount
+		var cPer = (this.aliens.length * 100) / this.aliensAmm;
+		if((this.lastPer - cPer) > 10){
+			this.CURR_VEL -= this.VEL_FACTOR;
+			this.lastPer = cPer;
+		}
+		
 		vMove = this.DOWN_FACTOR;
+		this.lastDir = this.dir;
 	}
 	
 	hMove = (vel * this.dir);
 	
 	this.position.x += hMove;
 	this.position.y += vMove;
-	
-	/*
-	var dir = this.dir;
-	var b = this.enemyBricks;
-	var bLen = b.length;
-	
-	for(var i=0; i< bLen; i++){
-		b[i].position.x += (vel * dir);
-		b[i].position.y += down;
-		b[i].update();
-	}
-	
-	this.state = !this.state;
-	
-	var self = this;
-	setTimeout(function(){ self.update(); }, this.VEL_FACTOR);
-	*/
-	
-	
-	
-	var arr = this.aliens;
-	var arrLen = arr.length;
 	
 	var shooterIdx = Math.floor(Math.random()*arrLen);
 	
@@ -86,14 +82,17 @@ Invasion.prototype.update = function(){
 		arr[i].position.y += vMove;
 		
 		var shoot = false;
-		if (shooterIdx === i)
+		if (shooterIdx === i && this.state)
 			shoot = true;
 		
-		arr[i].update(shoot, this.shield);
+		arr[i].update(this.state, shoot, this.shield, this.ship);
 	}
 	
+	if (this.vMove > 0)
+		this.vMove = 0;
+	
 	var self = this;
-	setTimeout(function(){ self.update(); }, this.VEL_FACTOR);
+	setTimeout(function(){ self.update(); }, this.CURR_VEL);
 }
 
 Invasion.prototype.draw = function(){
@@ -101,12 +100,13 @@ Invasion.prototype.draw = function(){
 	var arrLen = arr.length;
 	
 	for(var i=0; i< arrLen; i++){
-		arr[i].draw();
+		if (arr[i] !== undefined)
+			arr[i].draw();
 	}
 	
 	/*
 	this.ctx.rect(this.position.x, this.position.y, this.size.width, this.size.height);
-	this.ctx.lineWidth = 1;
+	this.ctx.lineWidth = 1; 
     this.ctx.strokeStyle = '#fff';
     this.ctx.stroke();
     */
@@ -117,9 +117,16 @@ Invasion.prototype.buildAliensImages = function(){
 	var opts = {
 		width: 30,
 		height: 30,
-		states: [2,3],
+		states: [1],
 		brickSize: 2		
 	};
+	
+	opts.mapper = this.getDeadAlienMap();
+	opts.color = 'white';
+	this.deadAlienImgs = ImageCreator.getImages(opts);
+	
+	
+	opts.states = [2,3];
 	
 	opts.mapper = this.getCrabMap();
 	opts.color = 'red';
@@ -156,6 +163,7 @@ Invasion.prototype.build = function(){
 					width: aSize,
 					height: aSize,
 					initState: 0,
+					destroyedImg: this.deadAlienImgs,
 					onDestroy: function(alien){
 						for(var i=0; i<self.aliens.length; i++){
 							if (self.aliens[i] === alien){
@@ -163,6 +171,9 @@ Invasion.prototype.build = function(){
 								break;
 							}
 						}
+					},
+					onWallCollision: function(){
+						self.hadAlienCollision = true;
 					}
 				};
 				
@@ -231,6 +242,18 @@ Invasion.prototype.getSquidMap = function(){
 	];
 }
 
-Invasion.prototype.destroy = function(){
-	
+Invasion.prototype.getDeadAlienMap = function(){	
+	return [
+		[1,0,0,0,0,0,0,0,0,0,1],
+		[0,1,0,0,0,1,0,0,0,1,0],
+		[0,0,1,0,0,1,0,0,1,0,0],
+		[0,0,0,1,0,1,0,1,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0,0],
+		[1,1,1,1,0,0,0,1,1,1,1],
+		[0,0,0,0,0,0,0,0,0,0,0],
+		[0,0,0,1,0,1,0,1,0,0,0],
+		[0,0,1,0,0,1,0,0,1,0,0],
+		[0,1,0,0,0,1,0,0,0,1,0],
+		[1,0,0,0,0,1,0,0,0,0,1]
+	];
 }
