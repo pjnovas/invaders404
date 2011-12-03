@@ -15,15 +15,16 @@ function Ship(options){
 		right: options.maxMoveRight,
 	}
 	
-	this.MOVE_FACTOR = 5;
 	this.color = '#1be400';
+	
+	this.MOVE_FACTOR = 5;
 	
 	this.brickSize = 2;
 	this.shipBricks = [];
 	
 	this.shoots = [];
-	
-	this.build();
+
+	this.imgs = [];
 	
 	var map = this.getShipMap();
 	
@@ -32,8 +33,7 @@ function Ship(options){
 		height: this.brickSize * map.length 
 	};
 	
-	console.log(this.size.width);
-	console.log(this.size.height);
+	this.build();
 	
 	this.shield = options.shield;
 	this.invasion = {};
@@ -44,25 +44,11 @@ Ship.prototype.update = function(actions){
 	
 	if ($.inArray(Controls.Left, actions)>-1){
 		if (this.position.x > this.maxMove.left){
-			var b = this.shipBricks;
-			var bLen = b.length;
-			
-			for(var i=0; i< bLen; i++){
-				b[i].position.x -= vel;
-				b[i].update();
-			}
 			this.position.x -= vel;
 		}
 	}
 	else if ($.inArray(Controls.Right, actions)>-1) { 
 		if (this.position.x < (this.maxMove.right - this.size.width)){
-			var b = this.shipBricks;
-			var bLen = b.length;
-			
-			for(var i=0; i< bLen; i++){
-				b[i].position.x += vel;
-				b[i].update();
-			}
 			this.position.x += vel;
 		}
 	}
@@ -70,7 +56,7 @@ Ship.prototype.update = function(actions){
 	var shootIdx = $.inArray(Controls.Shoot, actions);
 	if (shootIdx>-1 && this.shoots.length === 0){
        	actions.splice(shootIdx, 1);
-                
+       	
         var self = this;
         
 		var s = new Shoot({
@@ -79,7 +65,7 @@ Ship.prototype.update = function(actions){
 			y: this.position.y,
 			dir: -1,
 			shootShip: true,
-			color: '#green',
+			color: this.color,
 			onDestroy: function(s){
 				for(var i=0; i<self.shoots.length; i++){
 					if (self.shoots[i] === s){
@@ -98,12 +84,9 @@ Ship.prototype.update = function(actions){
 }
 
 Ship.prototype.draw = function(){
-	var b = this.shipBricks;
-	var bLen = b.length;
 	
-	for(var i=0; i< bLen; i++){
-		b[i].draw();
-	}
+	this.ctx.drawImage(this.imgs[0], 0, 0, this.size.width, this.size.height,
+                this.position.x, this.position.y, this.size.width, this.size.height);
 	
 	var s = this.shoots;
 	var sLen = s.length;
@@ -114,34 +97,16 @@ Ship.prototype.draw = function(){
 }
 
 Ship.prototype.build = function(){
-	var bSize = this.brickSize;
-	var x = this.position.x;
-	var y = this.position.y;
-	var ctx = this.ctx;
-	var color = this.color;
+	var opts = {
+		width: this.size.width,
+		height: this.size.height,
+		states: [1],
+		brickSize: this.brickSize,
+		mapper: this.getShipMap(),
+		color: this.color
+	};
 	
-	var shipArr = this.getShipMap();
-	var sArrLen = shipArr.length;
-	
-	for(var i=0; i< sArrLen; i++){
-		var sColLen = shipArr[i].length;
-		
-		for(var j=0; j< sColLen; j++){
-			
-			if (shipArr[i][j]){
-				var b = new Brick({
-					canvasCtx: ctx,
-					x: (j * bSize) + x,
-					y: (i * bSize) + y,
-					width: bSize,
-					height: bSize,
-					color: color
-				});
-				
-				this.shipBricks.push(b);
-			}
-		}
-	}
+	this.imgs = ImageCreator.getImages(opts);
 }
 
 Ship.prototype.getShipMap = function(){	

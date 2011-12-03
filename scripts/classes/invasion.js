@@ -56,7 +56,7 @@ Invasion.prototype.update = function(){
 	var arr = this.aliens;
 	var arrLen = arr.length;
 	
-	if (this.hadAlienCollision){//this.dir !== this.lastDir){
+	if (this.hadAlienCollision){
 		this.dir *= -1;
 		this.hadAlienCollision = false;
 		
@@ -110,31 +110,6 @@ Invasion.prototype.draw = function(){
     this.ctx.strokeStyle = '#fff';
     this.ctx.stroke();
     */
-}
-
-Invasion.prototype.buildAliensImages = function(){
-	
-	var opts = {
-		width: 30,
-		height: 30,
-		states: [1],
-		brickSize: 2		
-	};
-	
-	opts.mapper = this.getDeadAlienMap();
-	opts.color = 'white';
-	this.deadAlienImgs = ImageCreator.getImages(opts);
-	
-	
-	opts.states = [2,3];
-	
-	opts.mapper = this.getCrabMap();
-	opts.color = 'red';
-	this.crabImages = ImageCreator.getImages(opts);
-	
-	opts.mapper = this.getSquidMap();
-	opts.color = 'yellow';
-	this.squidImages = ImageCreator.getImages(opts);
 }
 
 Invasion.prototype.build = function(){
@@ -193,6 +168,30 @@ Invasion.prototype.build = function(){
 	}
 }
 
+Invasion.prototype.buildAliensImages = function(){
+	
+	var opts = {
+		width: 30,
+		height: 30,
+		states: [1],
+		brickSize: 2		
+	};
+	
+	opts.mapper = this.getDeadAlienMap();
+	opts.color = 'white';
+	this.deadAlienImgs = ImageCreator.getImages(opts);
+	
+	opts.states = [2,3];
+	
+	opts.mapper = this.getCrabMap();
+	opts.color = '#ff2727'; //red
+	this.crabImages = ImageCreator.getImages(opts);
+	
+	opts.mapper = this.getSquidMap();
+	opts.color = '#f8ff41'; //yellow
+	this.squidImages = ImageCreator.getImages(opts);
+}
+
 Invasion.prototype.getInvasionMap = function(){	
 	return [
 		[2,2,2,2,2,2,2,2,2,2,2,2,2],
@@ -206,7 +205,7 @@ Invasion.prototype.getInvasionMap = function(){
 
 }
 
-//Octopus
+//TODO: Octopus
 
 Invasion.prototype.getCrabMap = function(){	
 	return [

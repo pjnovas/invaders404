@@ -96,7 +96,7 @@ ImageCreator.getImages = function(options){
 		createImage(states[i]);						
 	}
 	
-	// destroy all bricks
+	// destroy all bricks created
 	var i = bricks.length - 1;
 	do{ bricks[i] = null; } while(i--);
 	
