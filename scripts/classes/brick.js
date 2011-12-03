@@ -36,9 +36,6 @@ Brick.prototype.draw = function(){
 	    
 	    this.ctx.fillStyle = this.color;
 	    this.ctx.fill();
-	    //this.ctx.lineWidth = 0;
-	    //this.ctx.strokeStyle = this.color;
-	    //this.ctx.stroke();
    }
 }
 

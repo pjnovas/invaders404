@@ -57,10 +57,6 @@ Alien.prototype.update = function(state, shoot, shield, ship){
 	}
 }
 
-Alien.prototype.hasCollision = function(){
-	
-}
-
 Alien.prototype.draw = function(){	
 	for(var i=0; i<this.shoots.length; i++){
 		this.shoots[i].draw();

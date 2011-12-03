@@ -42,8 +42,6 @@ function Invasion(options){
 	this.hadAlienCollision = false;
 	
 	this.update();
-	
-	//this.collateBricks = options.collateBricks;
 }
 
 Invasion.prototype.update = function(){
@@ -61,7 +59,7 @@ Invasion.prototype.update = function(){
 		this.hadAlienCollision = false;
 		
 		var cPer = (this.aliens.length * 100) / this.aliensAmm;
-		if((this.lastPer - cPer) > 10){
+		if((this.lastPer - cPer) > 7){
 			this.CURR_VEL -= this.VEL_FACTOR;
 			this.lastPer = cPer;
 		}
@@ -103,13 +101,6 @@ Invasion.prototype.draw = function(){
 		if (arr[i] !== undefined)
 			arr[i].draw();
 	}
-	
-	/*
-	this.ctx.rect(this.position.x, this.position.y, this.size.width, this.size.height);
-	this.ctx.lineWidth = 1; 
-    this.ctx.strokeStyle = '#fff';
-    this.ctx.stroke();
-    */
 }
 
 Invasion.prototype.build = function(){

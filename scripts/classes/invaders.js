@@ -26,8 +26,8 @@ Invaders.prototype.start = function(){
 	
 	this.shield = new Shield({
 		ctx: this.ctx,
-		x: 130,
-		y: 300
+		x: 100,
+		y: 290
 	});
 	
 	var cnvW = this.canvas.width;

@@ -20,8 +20,6 @@ function Ship(options){
 	this.MOVE_FACTOR = 5;
 	
 	this.brickSize = 2;
-	this.shipBricks = [];
-	
 	this.shoots = [];
 
 	this.imgs = [];
