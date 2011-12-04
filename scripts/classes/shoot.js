@@ -6,8 +6,6 @@ var Shoot = DrawableElement.extend({
 	init: function(options){
 		this._super(options);
 		
-		this.shootShip = options.shootShip;
-		
 		this.MOVE_FACTOR = 5;
 		this.dir = options.dir;
 		
