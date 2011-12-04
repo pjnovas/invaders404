@@ -48,7 +48,7 @@ ImageCreator.getImages = function(options){
 				
 				if (val){
 					var b = new Brick({
-						canvasCtx: ctx,
+						ctx: ctx,
 						x: (j * bSize),
 						y: (i * bSize),
 						width: bSize,
