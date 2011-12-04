@@ -18,7 +18,7 @@ var Shield = DrawableElement.extend({
 		var ctx = this.ctx;
 		var color = this.color;
 		
-		var fernetArr = this.getBrickMap();
+		var fernetArr = ImageMapper.Shield();
 		var fArrLen = fernetArr.length;
 		
 		for(var i=0; i< fArrLen; i++){
@@ -65,48 +65,11 @@ var Shield = DrawableElement.extend({
 			color: this.color
 		};
 		
-		var states = this.getBrickStateMap();
+		var states = ImageMapper.ShieldBrick();
 	
 		for (var i=0; i< states.length; i++){
 			opts.mapper = states[i];
 			this.imgs.push(ImageCreator.getImages(opts)[0]);
 		}
-	},
-	getBrickMap: function(){	
-		return [ //FERNET JS
-			[1,1,1,0,1,1,1,0,1,1,1,0,1,0,0,1,0,1,1,1,0,1,1,1,0,0,1,1,1,0,1,1,1],
-			[1,0,0,0,1,0,0,0,1,0,1,0,1,1,0,1,0,1,0,0,0,0,1,0,0,0,0,1,0,0,1,0,0],
-			[1,1,1,0,1,1,1,0,1,1,1,0,1,1,1,1,0,1,1,1,0,0,1,0,0,0,0,1,0,0,1,1,1],
-			[1,0,0,0,1,0,0,0,1,1,0,0,1,0,1,1,0,1,0,0,0,0,1,0,0,0,1,1,0,0,0,0,1],
-			[1,0,0,0,1,1,1,0,1,0,1,0,1,0,0,1,0,1,1,1,0,0,1,0,0,0,1,1,0,0,1,1,1]
-		];
-	},
-	getBrickStateMap: function(){	
-		return [ 
-			[
-				[1,1,1,1,1,1],
-				[1,1,1,1,1,1],
-				[1,1,1,1,1,1],
-				[1,1,1,1,1,1],
-				[1,1,1,1,1,1],
-				[1,1,1,1,1,1]
-			],
-			[
-				[0,1,1,1,0,1],
-				[1,1,1,0,0,0],
-				[1,1,0,1,1,0],
-				[0,0,1,0,1,1],
-				[1,0,0,1,0,1],
-				[1,1,0,0,1,1]
-			],
-			[
-				[0,0,0,1,0,1],
-				[0,0,0,0,0,0],
-				[1,0,0,1,0,0],
-				[0,0,1,0,1,1],
-				[1,0,0,1,0,1],
-				[1,1,0,0,0,0]
-			]
-		];
 	}
 });

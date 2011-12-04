@@ -19,7 +19,7 @@ var Ship = DrawableElement.extend({
 	
 		this.imgs = [];
 		
-		var map = this.getShipMap();
+		var map = ImageMapper.Ship();
 		
 		this.size = {
 			width: this.brickSize * map[0].length,
@@ -39,7 +39,7 @@ var Ship = DrawableElement.extend({
 			height: this.size.height,
 			states: [1],
 			brickSize: this.brickSize,
-			mapper: this.getShipMap(),
+			mapper: ImageMapper.Ship(),
 			color: this.color
 		};
 		
@@ -103,7 +103,7 @@ var Ship = DrawableElement.extend({
 		s.update();
 	},
 	buildShootImage: function(){
-		var map = this.getShootMap(),
+		var map = ImageMapper.ShipShoot(),
 			brickSize = 2,
 			width = brickSize * map[0].length,
 			height = brickSize * map.length;
@@ -118,31 +118,5 @@ var Ship = DrawableElement.extend({
 		};
 		
 		this.shootImage = ImageCreator.getImages(opts)[0];
-	},
-	getShipMap: function(){	
-		return [
-			[0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0],
-			[0,0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0],
-			[0,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0],
-			[0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0],
-			[0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0],
-			[0,1,1,1,0,1,1,0,1,1,0,1,1,0,1,1,1,0],
-			[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-			[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-			[0,0,1,1,1,0,0,0,0,0,0,0,0,1,1,1,0,0],
-			[0,0,1,1,1,0,0,0,0,0,0,0,0,1,1,1,0,0],
-			[0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0]
-		];
-	},
-	getShootMap: function(){	
-		return [
-			[1],
-			[1],
-			[1],
-			[1],
-			[1],
-			[1],
-			[1]
-		];
 	}
 });

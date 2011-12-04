@@ -52,7 +52,7 @@ var Invasion = DrawableElement.extend({
 		var y = this.position.y;
 		var ctx = this.ctx;
 		
-		var aliensArr = this.getInvasionMap();
+		var aliensArr = ImageMapper.Invasion();
 		var aArrLen = aliensArr.length;
 		
 		for(var i=0; i< aArrLen; i++){
@@ -195,7 +195,7 @@ var Invasion = DrawableElement.extend({
 		s.update();
 	},
 	buildShootImage: function(){
-		var map = this.getAlienShootMap(),
+		var map = ImageMapper.AlienShoot(),
 			brickSize = 2,
 			width = brickSize * map[0].length,
 			height = brickSize * map.length;
@@ -219,87 +219,18 @@ var Invasion = DrawableElement.extend({
 			brickSize: 2		
 		};
 		
-		opts.mapper = this.getDeadAlienMap();
+		opts.mapper = ImageMapper.DeadAlien();
 		opts.color = 'white';
 		this.deadAlienImgs = ImageCreator.getImages(opts);
 		
 		opts.states = [2,3];
 		
-		opts.mapper = this.getCrabMap();
+		opts.mapper = ImageMapper.AlienCrab();
 		opts.color = '#ff2727'; //red
 		this.crabImages = ImageCreator.getImages(opts);
 		
-		opts.mapper = this.getSquidMap();
+		opts.mapper = ImageMapper.AlienSquid();
 		opts.color = '#f8ff41'; //yellow
 		this.squidImages = ImageCreator.getImages(opts);
-	},
-	getInvasionMap: function(){	
-		return [
-			[2,2,2,2,2,2,2,2,2,2,2,2,2],
-			[2,2,2,1,2,1,1,1,2,2,2,1,2],
-			[2,2,1,1,2,1,2,1,2,2,1,1,2],
-			[2,1,2,1,2,1,2,1,2,1,2,1,2],
-			[2,1,1,1,2,1,2,1,2,1,1,1,2],
-			[2,2,2,1,2,1,1,1,2,2,2,1,2],
-			[2,2,2,2,2,2,2,2,2,2,2,2,2]
-		];
-	},
-	getCrabMap: function(){	
-		return [
-			[0,0,1,0,0,0,0,0,1,0,0],
-			[3,0,0,1,0,0,0,1,0,0,3],
-			[3,0,0,1,0,0,0,1,0,0,3],
-			[3,0,1,1,1,1,1,1,1,0,3],
-			[3,0,1,0,1,1,1,0,1,0,3],
-			[3,1,1,1,1,1,1,1,1,1,3],
-			[2,1,1,1,1,1,1,1,1,1,2],
-			[2,0,1,1,1,1,1,1,1,0,2],
-			[2,0,1,1,1,1,1,1,1,0,2],
-			[2,0,1,0,0,0,0,0,1,0,2],
-			[2,0,1,0,0,0,0,0,1,0,2],
-			[0,3,0,2,2,0,2,2,0,3,0]
-		];
-	},
-	getSquidMap: function(){	
-		return [
-			[0,0,0,0,0,1,0,0,0,0,0],
-			[0,0,0,0,1,1,1,0,0,0,0],
-			[0,0,0,1,1,1,1,1,0,0,0],
-			[0,0,1,1,1,1,1,1,1,0,0],
-			[0,1,1,0,1,1,1,0,1,1,0],
-			[1,1,1,1,1,1,1,1,1,1,1],
-			[1,1,1,1,1,1,1,1,1,1,1],
-			[1,1,1,1,1,1,1,1,1,1,1],
-			[0,0,1,0,0,0,0,0,1,0,0],
-			[0,0,1,0,0,0,0,0,1,0,0],
-			[0,1,0,3,0,0,0,3,0,1,0],
-			[3,0,1,0,3,0,3,0,1,0,3]
-		];
-	},
-	getDeadAlienMap: function(){	
-		return [
-			[1,0,0,0,0,0,0,0,0,0,1],
-			[0,1,0,0,0,1,0,0,0,1,0],
-			[0,0,1,0,0,1,0,0,1,0,0],
-			[0,0,0,1,0,1,0,1,0,0,0],
-			[0,0,0,0,0,0,0,0,0,0,0],
-			[1,1,1,1,0,0,0,1,1,1,1],
-			[0,0,0,0,0,0,0,0,0,0,0],
-			[0,0,0,1,0,1,0,1,0,0,0],
-			[0,0,1,0,0,1,0,0,1,0,0],
-			[0,1,0,0,0,1,0,0,0,1,0],
-			[1,0,0,0,0,1,0,0,0,0,1]
-		];
-	},
-	getAlienShootMap: function(){	
-		return [
-			[0,1,0],
-			[1,0,0],
-			[0,1,0],
-			[0,0,1],
-			[0,1,0],
-			[1,0,0],
-			[0,1,0]
-		];
 	}
 });
