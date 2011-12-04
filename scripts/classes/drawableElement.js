@@ -29,8 +29,8 @@ var DrawableElement = Class.extend({
 	update: function(){
 		
 	},
-	draw: function(){
-		
+	draw: function(img){
+		this.ctx.drawImage(img, this.position.x, this.position.y);
 	},
 	destroy: function(){
 		this.ctx = null;

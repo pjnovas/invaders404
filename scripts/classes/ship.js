@@ -14,6 +14,7 @@ var Ship = DrawableElement.extend({
 		this.MOVE_FACTOR = 5;
 	
 		this.brickSize = 2;
+		this.shootImage = null;
 		this.shoots = [];
 	
 		this.imgs = [];
@@ -31,6 +32,8 @@ var Ship = DrawableElement.extend({
 		this.invasion = {};
 	},
 	build: function(){
+		this.buildShootImage();
+		
 		var opts = {
 			width: this.size.width,
 			height: this.size.height,
@@ -59,36 +62,12 @@ var Ship = DrawableElement.extend({
 		var shootIdx = $.inArray(Controls.Shoot, actions);
 		if (shootIdx>-1 && this.shoots.length === 0){
 	       	actions.splice(shootIdx, 1);
-	       	
-	        var self = this;
-	        
-			var s = new Shoot({
-				ctx: this.ctx,
-				x: this.position.x + (this.size.width /2),
-				y: this.position.y,
-				dir: -1,
-				shootShip: true,
-				color: this.color,
-				onDestroy: function(s){
-					for(var i=0; i<self.shoots.length; i++){
-						if (self.shoots[i] === s){
-							self.shoots.splice(i, 1);
-							break;
-						}
-					}
-				},
-				collateBricks: this.shield.bricks,
-				collateAliens: this.invasion.aliens 
-			});
-			
-			this.shoots.push(s);
-			s.update();
+	       	this.makeShoot();
 		}
 	},
 	draw: function(){
-		this.ctx.drawImage(this.imgs[0], 0, 0, this.size.width, this.size.height,
-                this.position.x, this.position.y, this.size.width, this.size.height);
-	
+		this._super(this.imgs[0]);
+		
 		var s = this.shoots;
 		var sLen = s.length;
 		
@@ -98,6 +77,47 @@ var Ship = DrawableElement.extend({
 	},
 	destroy: function(){
 		alert('BOOM!');
+	},
+	makeShoot: function(){
+        var self = this;
+        
+		var s = new Shoot({
+			ctx: this.ctx,
+			x: this.position.x + (this.size.width /2),
+			y: this.position.y,
+			dir: -1,
+			shootImage: this.shootImage,
+			onDestroy: function(s){
+				for(var i=0; i<self.shoots.length; i++){
+					if (self.shoots[i] === s){
+						self.shoots.splice(i, 1);
+						break;
+					}
+				}
+			},
+			collateBricks: this.shield.bricks,
+			collateAliens: this.invasion.aliens 
+		});
+		
+		this.shoots.push(s);
+		s.update();
+	},
+	buildShootImage: function(){
+		var map = this.getShootMap(),
+			brickSize = 2,
+			width = brickSize * map[0].length,
+			height = brickSize * map.length;
+		
+		var opts = {
+			width: width,
+			height: height,
+			states: [1],
+			brickSize: brickSize,
+			mapper: map,
+			color: this.color
+		};
+		
+		this.shootImage = ImageCreator.getImages(opts)[0];
 	},
 	getShipMap: function(){	
 		return [
@@ -112,6 +132,17 @@ var Ship = DrawableElement.extend({
 			[0,0,1,1,1,0,0,0,0,0,0,0,0,1,1,1,0,0],
 			[0,0,1,1,1,0,0,0,0,0,0,0,0,1,1,1,0,0],
 			[0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0]
+		];
+	},
+	getShootMap: function(){	
+		return [
+			[1],
+			[1],
+			[1],
+			[1],
+			[1],
+			[1],
+			[1]
 		];
 	}
 });

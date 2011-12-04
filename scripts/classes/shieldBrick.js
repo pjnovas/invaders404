@@ -18,8 +18,7 @@ var ShieldBrick = DrawableElement.extend({
 	},
 	draw: function(){
 		if (!this.destroyed){
-			this.ctx.drawImage(this.imgsState[this.state], 
-								this.position.x, this.position.y);
+			this._super(this.imgsState[this.state]);
 	   }
 	},
 	destroy: function(){

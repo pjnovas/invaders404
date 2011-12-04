@@ -32,6 +32,9 @@ var Invasion = DrawableElement.extend({
 		this.squidImages = [];
 		this.deadAlienImgs = [];
 	
+		this.shootImage = null;
+		this.shoots = [];
+	
 		this.build();
 		
 		this.aliensAmm = this.aliens.length; 
@@ -41,6 +44,7 @@ var Invasion = DrawableElement.extend({
 	},
 	build: function(){
 		var self = this;
+		this.buildShootImage();
 		this.buildAliensImages();
 		
 		var aSize = this.alienSize;
@@ -64,7 +68,6 @@ var Invasion = DrawableElement.extend({
 						y: (i * aSize) + y,
 						width: aSize,
 						height: aSize,
-						initState: 0,
 						destroyedImg: this.deadAlienImgs,
 						onDestroy: function(alien){
 							for(var i=0; i<self.aliens.length; i++){
@@ -108,16 +111,16 @@ var Invasion = DrawableElement.extend({
 			this.dir *= -1;
 			this.hadAlienCollision = false;
 			
-			var cPer = (this.aliens.length * 100) / this.aliensAmm;
-			if((this.lastPer - cPer) > 7){
-				this.CURR_VEL -= this.VEL_FACTOR;
-				this.lastPer = cPer;
-			}
-			
 			vMove = this.DOWN_FACTOR;
 			this.lastDir = this.dir;
 		}
-		
+
+		var cPer = (arrLen * 100) / this.aliensAmm;
+		if((this.lastPer - cPer) > 9){
+			this.CURR_VEL -= this.VEL_FACTOR;
+			this.lastPer = cPer;
+		}
+				
 		hMove = (vel * this.dir);
 		
 		this.position.x += hMove;
@@ -125,15 +128,18 @@ var Invasion = DrawableElement.extend({
 		
 		var shooterIdx = Math.floor(Math.random()*arrLen);
 		
+		var shoot = false;
+		if (this.state && Math.floor(Math.random()*2))
+			shoot = true;
+		
 		for(var i=0; i< arrLen; i++){
 			arr[i].position.x += hMove;
 			arr[i].position.y += vMove;
 			
-			var shoot = false;
-			if (shooterIdx === i && this.state)
-				shoot = true;
+			if (shoot && shooterIdx === i)
+				this.makeShoot(arr[i]);
 			
-			arr[i].update(this.state, shoot, this.shield, this.ship);
+			arr[i].update();
 		}
 		
 		if (this.vMove > 0)
@@ -143,16 +149,67 @@ var Invasion = DrawableElement.extend({
 		setTimeout(function(){ self.update(); }, this.CURR_VEL);
 	},
 	draw: function(){
+		var state = this.state;
+		
 		var arr = this.aliens;
 		var arrLen = arr.length;
-		
 		for(var i=0; i< arrLen; i++){
 			if (arr[i] !== undefined)
-				arr[i].draw();
+				arr[i].draw(state);
+		}
+		
+		var shoots = this.shoots;
+		var shootsLen = shoots.length;
+		for(var i=0; i< shootsLen; i++){
+			shoots[i].draw();
 		}
 	},
 	destroy: function(){
 		
+	},
+	makeShoot: function(alien){
+		var shield = this.shield;
+		var ship = this.ship;
+		
+		var self = this;
+		
+		var s = new Shoot({
+			ctx: this.ctx,
+			x: alien.position.x + (alien.size.width /2),
+			y: alien.position.y,
+			dir: 1,
+			shootImage: this.shootImage,
+			onDestroy: function(s){
+				for(var i=0; i<self.shoots.length; i++){
+					if (self.shoots[i] === s){
+						self.shoots.splice(i, 1);
+						break;
+					}
+				}
+			},
+			collateBricks: shield.bricks,
+			collateAliens: [ship]
+		});
+		
+		this.shoots.push(s);
+		s.update();
+	},
+	buildShootImage: function(){
+		var map = this.getAlienShootMap(),
+			brickSize = 2,
+			width = brickSize * map[0].length,
+			height = brickSize * map.length;
+		
+		var opts = {
+			width: width,
+			height: height,
+			states: [1],
+			brickSize: brickSize,
+			mapper: map,
+			color: '#fff'
+		};
+		
+		this.shootImage = ImageCreator.getImages(opts)[0];
 	},
 	buildAliensImages: function(){
 		var opts = {
@@ -232,6 +289,17 @@ var Invasion = DrawableElement.extend({
 			[0,0,1,0,0,1,0,0,1,0,0],
 			[0,1,0,0,0,1,0,0,0,1,0],
 			[1,0,0,0,0,1,0,0,0,0,1]
+		];
+	},
+	getAlienShootMap: function(){	
+		return [
+			[0,1,0],
+			[1,0,0],
+			[0,1,0],
+			[0,0,1],
+			[0,1,0],
+			[1,0,0],
+			[0,1,0]
 		];
 	}
 });

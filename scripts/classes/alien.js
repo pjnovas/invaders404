@@ -6,7 +6,6 @@ var Alien = DrawableElement.extend({
 	init: function(options){
 		this._super(options);
 		
-		this.state = options.initState;
 		this.images = options.stateImgs;
 		this.destroyedImg = options.destroyedImg;
 		
@@ -18,50 +17,18 @@ var Alien = DrawableElement.extend({
 	build: function(){
 		
 	},
-	update: function(state, shoot, shield, ship){
-		this.state = state;
-	
+	update: function(){
 		var sX = this.position.x;
 		if (sX < 20 || sX > (590 - this.size.width))
 			this.onWallCollision();
-		
-		if (shoot){
-			var self = this;
-			var s = new Shoot({
-				ctx: this.ctx,
-				x: this.position.x + (this.size.width /2),
-				y: this.position.y,
-				dir: 1,
-				color: '#fff',
-				onDestroy: function(s){
-					for(var i=0; i<self.shoots.length; i++){
-						if (self.shoots[i] === s){
-							self.shoots.splice(i, 1);
-							break;
-						}
-					}
-				},
-				collateBricks: shield.bricks,
-				collateAliens: [ship]
-			});
-			
-			this.shoots.push(s);
-			s.update();
-		}
 	},
-	draw: function(){
-		for(var i=0; i<this.shoots.length; i++){
-			this.shoots[i].draw();
-		}
-		
+	draw: function(state){
 		if (!this.destroyed){
-			var idx = (this.state) ? 0: 1;	
-			this.ctx.drawImage(this.images[idx], 0, 0, this.size.width, this.size.height,
-		                        this.position.x, this.position.y, this.size.width, this.size.height);
+			var idx = (state) ? 0: 1;	
+			this._super(this.images[idx]);
 		}
 		else {
-			this.ctx.drawImage(this.destroyedImg[0], 0, 0, this.size.width, this.size.height,
-		                        this.position.x, this.position.y, this.size.width, this.size.height);       
+			this._super(this.destroyedImg[0]);
 			this.onDestroy(this);
 		}
 	},
