@@ -48,18 +48,18 @@ var Ship = DrawableElement.extend({
 	update: function(actions){
 		var vel = this.MOVE_FACTOR;
 	
-		if ($.inArray(Controls.Left, actions)>-1){
+		if (actions.indexOf(Controls.Left)>-1){
 			if (this.position.x > this.maxMove.left){
 				this.position.x -= vel;
 			}
 		}
-		else if ($.inArray(Controls.Right, actions)>-1) { 
+		else if (actions.indexOf(Controls.Right)>-1) { 
 			if (this.position.x < (this.maxMove.right - this.size.width)){
 				this.position.x += vel;
 			}
 		}
 		
-		var shootIdx = $.inArray(Controls.Shoot, actions);
+		var shootIdx = actions.indexOf(Controls.Shoot);
 		if (shootIdx>-1 && this.shoots.length === 0){
 	       	actions.splice(shootIdx, 1);
 	       	this.makeShoot();

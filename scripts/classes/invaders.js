@@ -5,7 +5,6 @@
 var Invaders404 = Class.extend({
 	init: function(options){
 		this.canvas = null;
-		
 		this.ctx = null;
 		
 		this.loopInterval = 20;
@@ -13,7 +12,7 @@ var Invaders404 = Class.extend({
 		
 		this.shield = {};
 		this.ship = {};
-		this.invasion = [];
+		this.invasion = {};
 		
 		this.initCanvas();
 	},
@@ -90,14 +89,14 @@ var Invaders404 = Class.extend({
 		    
 		    return null;	
 		}
-	
-	    $(document).bind('keydown', function (event) {
+		
+		document.addEventListener('keydown', function (event) {
 	        var key = event.keyCode;
 	
-	        if ($.inArray(key, gameKeys) > -1) {
+	        if (gameKeys.indexOf(key) > -1) {
 	        	var dir = getAction(key);
 	        	
-	        	if ($.inArray(dir, self.currentDir) === -1) 
+	        	if (self.currentDir.indexOf(dir) === -1) 
 	        		self.currentDir.push(dir);
 	
 	            event.stopPropagation();
@@ -106,19 +105,19 @@ var Invaders404 = Class.extend({
 	        }
 	    });
 	
-	    $(document).bind('keyup', function (event) {
+		document.addEventListener('keyup', function (event) {
 	    	var key = event.keyCode;
 	    	
 	    	var dir = getAction(key);    	
-	        var pos = $.inArray(dir, self.currentDir);
+	    	var pos = self.currentDir.indexOf(dir);
 	        if (pos > -1)
 	        	self.currentDir.splice(pos, 1);        
 	    });
 	
 	},
 	unbindControls: function(params){
-		 $(document).unbind('keydown');
-		 $(document).unbind('keyup');
+		document.removeEventListener('keydown');
+		document.removeEventListener('keyup');
 	},
 	destroy: function(){
 		
