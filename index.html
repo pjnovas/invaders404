@@ -21,7 +21,14 @@
         
         <script type="text/javascript">
         	window.addEventListener('load', function(){
-        		var invaders = new Invaders404();
+        		var invaders = new Invaders404({
+        			onLoose: function(){
+        				invaders.build();
+        			},
+        			onWin: function(){
+        				alert('you won!');
+        			}
+        		});
         		invaders.start();
         	});
         </script>

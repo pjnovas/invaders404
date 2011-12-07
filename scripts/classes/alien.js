@@ -29,10 +29,14 @@ var Alien = DrawableElement.extend({
 		}
 		else {
 			this._super(this.destroyedImg[0]);
+			this.destroy();
 			this.onDestroy(this);
 		}
 	},
-	destroy: function(){
+	collided: function(){
 		this.destroyed = true;
+	},
+	destroy: function(){
+		this._super();
 	}
 });

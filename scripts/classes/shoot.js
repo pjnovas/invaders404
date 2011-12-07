@@ -10,33 +10,46 @@ var Shoot = DrawableElement.extend({
 		this.dir = options.dir;
 		
 		this.shootImage = options.shootImage;
-		this.build();
 		
 		this.collateBricks = options.collateBricks;
 		this.collateAliens = options.collateAliens;
+	
+		this.timer = null;
 	},
 	build: function(){
 		
 	},
-	update: function(){
+	loop: function(){
 		var dir = this.dir;
 		var vel = this.MOVE_FACTOR;
 		
 		this.position.y += (vel * dir);
 		
 		if(this.hasCollision()){
-			this.destroy();
+			this.collided();
 			return;
 		}
-		
+	},
+	update: function(){
+		clearInterval(this.timer);
 		var self = this;
-		setTimeout(function(){ self.update(); }, 20);
+		this.timer = setInterval(function(){ self.loop(); }, 20);
 	},
 	draw: function(){
 		this._super(this.shootImage);
 	},
+	collided: function(){
+		this.destroy();
+	},
 	destroy: function(){
+		clearInterval(this.timer);
+		
+		this.collateBricks = null;
+		this.collateAliens = null;
+		
 		this.onDestroy(this);
+		
+		this._super();
 	},
 	hasCollision: function(){
 		var sX = this.position.x;
@@ -60,7 +73,7 @@ var Shoot = DrawableElement.extend({
 				var cbD = cbT + cbO.size.height;
 				
 				if (sX >= cbL && sX <= cbR && sY >= cbT && sY <= cbD && !cbO.destroyed){
-					arr[i].destroy();
+					arr[i].collided();
 					return true;
 				}
 			}	

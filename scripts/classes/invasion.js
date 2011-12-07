@@ -40,6 +40,9 @@ var Invasion = DrawableElement.extend({
 		this.aliensAmm = this.aliens.length; 
 		this.hadAlienCollision = false;
 		
+		this.onAliensClean = (options.onAliensClean) ? options.onAliensClean : function(){};
+		
+		this.timer = null;
 		this.update();
 	},
 	build: function(){
@@ -97,7 +100,7 @@ var Invasion = DrawableElement.extend({
 			}
 		}
 	},
-	update: function(){
+	loop: function(){
 		this.state = !this.state;
 	
 		var vel = this.MOVE_FACTOR;
@@ -107,18 +110,17 @@ var Invasion = DrawableElement.extend({
 		var arr = this.aliens;
 		var arrLen = arr.length;
 		
+		if (arrLen === 0){
+			clearInterval(this.timer);
+			this.onAliensClean();
+		}
+		
 		if (this.hadAlienCollision){
 			this.dir *= -1;
 			this.hadAlienCollision = false;
 			
 			vMove = this.DOWN_FACTOR;
 			this.lastDir = this.dir;
-		}
-
-		var cPer = (arrLen * 100) / this.aliensAmm;
-		if((this.lastPer - cPer) > 9){
-			this.CURR_VEL -= this.VEL_FACTOR;
-			this.lastPer = cPer;
 		}
 				
 		hMove = (vel * this.dir);
@@ -142,11 +144,20 @@ var Invasion = DrawableElement.extend({
 			arr[i].update();
 		}
 		
-		if (this.vMove > 0)
-			this.vMove = 0;
+		if (this.vMove > 0) this.vMove = 0;
 		
+		var cPer = (arrLen * 100) / this.aliensAmm;
+		if((this.lastPer - cPer) > 9){
+			this.CURR_VEL -= this.VEL_FACTOR;
+			this.lastPer = cPer;
+			this.update();
+			return;
+		}
+	},
+	update: function(){
+		clearInterval(this.timer);
 		var self = this;
-		setTimeout(function(){ self.update(); }, this.CURR_VEL);
+		this.timer = setInterval(function(){ self.loop(); }, this.CURR_VEL);
 	},
 	draw: function(){
 		var state = this.state;
@@ -165,7 +176,17 @@ var Invasion = DrawableElement.extend({
 		}
 	},
 	destroy: function(){
+		clearInterval(this.timer);
 		
+		this.shield = null;
+		this.ship = null;
+		
+		for(var i=0; i< this.shoots.length; i++){
+			this.shoots[i].destroy();
+		}
+		this.shoots = [];
+		
+		this._super();
 	},
 	makeShoot: function(alien){
 		var shield = this.shield;

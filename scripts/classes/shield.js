@@ -54,7 +54,14 @@ var Shield = DrawableElement.extend({
 		}
 	},
 	destroy: function(){
+		var b = this.bricks;
+		var bLen = b.length;
+		for(var i=0; i< bLen; i++){
+			b[i].destroy();
+		}
+		this.bricks = [];
 		
+		this._super();
 	},
 	createImagesStateBricks: function(){
 		var opts = {

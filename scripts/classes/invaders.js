@@ -15,12 +15,21 @@ var Invaders404 = Class.extend({
 		this.invasion = {};
 		
 		this.initCanvas();
+		
+		this.onLoose = (options.onLoose) ? options.onLoose : function(){};
+		this.onWin = (options.onWin) ? options.onWin : function(){};
+		
+		this.isOnGame = false;
 	},
 	initCanvas: function(){
 		this.canvas = document.getElementById('canvas');
 		this.ctx = this.canvas.getContext('2d');
 	},
 	start: function(){
+		this.build();
+		this.loop();	
+	},
+	build: function(){
 		var self = this;
 		
 		this.shield = new Shield({
@@ -40,7 +49,11 @@ var Invaders404 = Class.extend({
 			maxMoveRight: cnvW-10,
 			x: ((cnvW-10) / 2),
 			y: 370,
-			color: '#1be400'
+			color: '#1be400',
+			onShipHit: function(){
+				self.stop();
+				self.onLoose();
+			}
 		});
 		
 		this.invasion = new Invasion({
@@ -48,22 +61,28 @@ var Invaders404 = Class.extend({
 			x: 20,
 			y: 10,
 			shield: this.shield,
-			ship: this.ship
+			ship: this.ship,
+			onAliensClean: function(){
+				self.stop();
+				self.onWin();
+			}
 		});
 		
 		this.ship.invasion = this.invasion;
 		
 		this.currentDir = [];
 		
+		this.isOnGame = true;
 		this.bindControls();
-		this.loop();
 	},
 	loop: function(){
 		this.update();
 		this.draw();
 		
-		var self = this;
-		setTimeout(function(){ self.loop(); }, self.loopInterval);
+		if (this.isOnGame){
+			var self = this;
+			setTimeout(function(){ self.loop(); }, self.loopInterval);
+		}
 	},
 	update: function(){
 		this.shield.update();
@@ -91,35 +110,52 @@ var Invaders404 = Class.extend({
 		}
 		
 		document.addEventListener('keydown', function (event) {
-	        var key = event.keyCode;
-	
-	        if (gameKeys.indexOf(key) > -1) {
-	        	var dir = getAction(key);
-	        	
-	        	if (self.currentDir.indexOf(dir) === -1) 
-	        		self.currentDir.push(dir);
-	
-	            event.stopPropagation();
-	            event.preventDefault();
-	            return false;
-	        }
+			if (self.isOnGame){
+		        var key = event.keyCode;
+		
+		        if (gameKeys.indexOf(key) > -1) {
+		        	var dir = getAction(key);
+		        	
+		        	if (self.currentDir.indexOf(dir) === -1) 
+		        		self.currentDir.push(dir);
+		
+		            event.stopPropagation();
+		            event.preventDefault();
+		            return false;
+		        }
+	    	}
 	    });
 	
 		document.addEventListener('keyup', function (event) {
-	    	var key = event.keyCode;
-	    	
-	    	var dir = getAction(key);    	
-	    	var pos = self.currentDir.indexOf(dir);
-	        if (pos > -1)
-	        	self.currentDir.splice(pos, 1);        
+			if (self.isOnGame){
+		    	var key = event.keyCode;
+		    	
+		    	var dir = getAction(key);    	
+		    	var pos = self.currentDir.indexOf(dir);
+		        if (pos > -1)
+		        	self.currentDir.splice(pos, 1);        
+	    	}
 	    });
 	
 	},
 	unbindControls: function(params){
-		document.removeEventListener('keydown');
-		document.removeEventListener('keyup');
+		document.removeEventListener('keydown', function(){});
+		document.removeEventListener('keyup', function(){});
 	},
 	destroy: function(){
+		this.shield.destroy();
+		this.invasion.destroy();
+		this.ship.destroy();
+	},
+	stop: function(){
+		//this.unbindControls();
+		this.isOnGame = false;
 		
+		for (var i=0; i<this.currentDir.length; i++)
+			this.currentDir[i] = null;
+		
+		this.currentDir = [];
+		
+		this.destroy();
 	}
 });

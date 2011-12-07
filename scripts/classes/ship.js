@@ -11,6 +11,8 @@ var Ship = DrawableElement.extend({
 			right: options.maxMoveRight,
 		};
 		
+		this.onShipHit = (options.onShipHit) ? options.onShipHit : function(){};
+		
 		this.MOVE_FACTOR = 5;
 	
 		this.brickSize = 2;
@@ -70,13 +72,29 @@ var Ship = DrawableElement.extend({
 		
 		var s = this.shoots;
 		var sLen = s.length;
-		
 		for(var i=0; i< sLen; i++){
 			s[i].draw();
 		}
 	},
+	collided: function(){
+		this.onShipHit();
+	},
 	destroy: function(){
-		alert('BOOM!');
+		this.onShipHit = null;
+		
+		this.shootImage = null;
+		
+		for(var i=0; i< this.shoots.length; i++){
+			this.shoots[i].destroy();
+		}
+		this.shoots = [];
+	
+		this.imgs = [];
+		
+		this.shield = null;
+		this.invasion = null;
+		
+		this._super();
 	},
 	makeShoot: function(){
         var self = this;

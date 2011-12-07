@@ -21,11 +21,13 @@ var ShieldBrick = DrawableElement.extend({
 			this._super(this.imgsState[this.state]);
 	   }
 	},
-	destroy: function(){
+	collided: function(){
 		this.state++;
 		if (this.state > 2){
 			this.destroyed = true;
-			//this.onDestroy();
 		}	
+	},
+	destroy: function(){
+		this._super();
 	}
 });

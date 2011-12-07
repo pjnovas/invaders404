@@ -30,30 +30,37 @@ var DrawableElement = Class.extend({
 		
 	},
 	draw: function(img){
-		this.ctx.drawImage(img, this.position.x, this.position.y);
+		if (this.ctx != null)
+			this.ctx.drawImage(img, this.position.x, this.position.y);
 	},
 	destroy: function(){
 		this.ctx = null;
 	
-		this.size.width = null;
-		this.size.height = null;
-		this.size = null;
+		if (this.size != null) {
+			this.size.width = null;
+			this.size.height = null;
+			this.size = null;
+		}
 		
-		this.position.x = null;
-		this.position.y = null;
-		this.position = null;
+		if (this.position != null) {
+			this.position.x = null;
+			this.position.y = null;
+			this.position = null;
+		}
 		
 		this.brickSize = null;
 		this.color = null;
 		
 		var bricks = this.bricks;
-		var bricksL = bricks.length;
-		for(var i=0; i< bricksL; i++)
-			bricks[i] = null;
-			
-		this.bricks = null;
+		if (bricks != null) {
+			var bricksL = bricks.length;
+			for(var i=0; i< bricksL; i++)
+				bricks[i] = null;
+				
+			this.bricks = null;
+		}
 		
-		if (this.onDestroy) this.onDestroy(this);
+		//if (this.onDestroy) this.onDestroy(this);
 	}
 });
 
