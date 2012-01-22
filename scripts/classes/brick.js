@@ -6,13 +6,8 @@ var Brick = DrawableElement.extend({
 	init: function(options){
 		this._super(options);
 		
-		this.destroyed = false;
-		
-		var val = 1;
-		if (options.value != undefined)
-			val = options.value;
-		
-		this.value = val;
+		this.destroyed = false;		
+		this.value = options.value || 1;
 	},
 	build: function(){
 		

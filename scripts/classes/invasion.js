@@ -40,7 +40,7 @@ var Invasion = DrawableElement.extend({
 		this.aliensAmm = this.aliens.length; 
 		this.hadAlienCollision = false;
 		
-		this.onAliensClean = (options.onAliensClean) ? options.onAliensClean : function(){};
+		this.onAliensClean = options.onAliensClean || function(){};
 		
 		this.timer = null;
 		this.update();

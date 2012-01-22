@@ -12,14 +12,14 @@ ImageCreator.getImages = function(options){
 	
 	// B - Get parameters ---------------------------------
 
-	var mapper = (options.mapper) ? options.mapper : [];
-	var w = (options.width) ? options.width : 100;
-	var h = (options.height) ? options.height : 100;
+	var mapper = options.mapper || [];
+	var w = options.width || 100;
+	var h = options.height || 100;
 	
-	var states = (options.states) ? options.states : [];
-	var bSize = (options.brickSize) ? options.brickSize : 5;
+	var states = options.states || [];
+	var bSize = options.brickSize || 5;
 	
-	var color = (options.color) ? options.color : '#000';
+	var color = options.color || '#000';
 	
 	// E - Get parameters ---------------------------------
 	

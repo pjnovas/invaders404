@@ -7,21 +7,21 @@ var DrawableElement = Class.extend({
 		this.ctx = (options.ctx) ? options.ctx : null; // throw "must provide a Canvas Context";
 	
 		this.size = {
-			width: (options.width) ? options.width : 0,
-			height: (options.height) ? options.height : 0
+			width: options.width || 0,
+			height: options.height || 0
 		};
 		
 		this.position = {
-			x: (options.x) ? options.x : 0,
-			y: (options.y) ? options.y : 0
+			x: options.x || 0,
+			y: options.y || 0
 		};
 		
-		this.brickSize = (options.brickSize) ? options.brickSize : 1;
-		this.color = (options.color) ? options.color : '#000';
+		this.brickSize = options.brickSize || 1;
+		this.color = options.color || '#000';
 		
 		this.bricks = [];
 		
-		this.onDestroy = (options.onDestroy) ? options.onDestroy : function(){};
+		this.onDestroy = options.onDestroy || function(){};
 	},
 	build: function(){
 		

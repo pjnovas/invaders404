@@ -2,6 +2,13 @@
  * @author pjnovas
  */
 
+/* TODO:
+
+- fix the removeEventListener
+- aliens on shield bricks
+
+ */
+
 var Invaders404 = Class.extend({
 	init: function(options){
 		this.canvas = null;
@@ -16,8 +23,8 @@ var Invaders404 = Class.extend({
 		
 		this.initCanvas();
 		
-		this.onLoose = (options.onLoose) ? options.onLoose : function(){};
-		this.onWin = (options.onWin) ? options.onWin : function(){};
+		this.onLoose = options.onLoose || function(){};
+		this.onWin = options.onWin || function(){};
 		
 		this.isOnGame = false;
 	},

@@ -6,10 +6,10 @@ var Alien = DrawableElement.extend({
 	init: function(options){
 		this._super(options);
 		
-		this.images = options.stateImgs;
-		this.destroyedImg = options.destroyedImg;
+		this.images = options.stateImgs || [];
+		this.destroyedImg = options.destroyedImg || [];
 		
-		this.onWallCollision = options.onWallCollision;
+		this.onWallCollision = options.onWallCollision || [];
 		
 		this.destroyed = false;
 		this.shoots = [];
