@@ -54,7 +54,7 @@ var Invaders404 = Class.extend({
 
 		this.shield = new Shield({
 			ctx : this.ctx,
-			x : 100,
+			x : 80,
 			y : 290,
 			brickSize : 12,
 			color : '#fff'
@@ -190,5 +190,36 @@ var Invaders404 = Class.extend({
 		this.currentDir = [];
 
 		this.destroy();
+	},
+	drawSplash : function(callback) {
+		var ctx = this.ctx,
+			cellSize = 1,
+			cols = this.canvas.height/cellSize,
+			colsL = this.canvas.width/cellSize,
+			colIdx = 0;
+			
+		function drawColumn(idx, color){
+			for(j=0; j< colsL; j++){
+				ctx.save();
+				ctx.fillStyle = color;  
+				ctx.fillRect(idx*(cellSize+20),j*cellSize , cellSize+20, cellSize); 
+				ctx.restore();
+			}
+		}
+		
+		var timerAux = setInterval(function() {
+			if(colIdx < colsL/10){
+				drawColumn(colIdx, "#F0DB4F");
+				drawColumn(colIdx+1, "#ddc649");
+				drawColumn(colIdx+2, "#c4ad41");
+				drawColumn(colIdx+3, "#938631");
+				drawColumn(colIdx+4, "#6d6224");
+				colIdx++;
+			}
+			else {
+				clearInterval(timerAux);
+				callback();
+			}
+		}, this.loopInterval);
 	}
 });

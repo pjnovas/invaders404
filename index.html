@@ -5,6 +5,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>FernetJS Invaders</title>
         
+        <!--
         <script type="text/javascript" src="scripts/classes/class.js"></script>
         <script type="text/javascript" src="scripts/classes/static.js"></script>
         <script type="text/javascript" src="scripts/classes/imageMapper.js"></script>
@@ -18,26 +19,101 @@
         <script type="text/javascript" src="scripts/classes/shieldBrick.js"></script>
         <script type="text/javascript" src="scripts/classes/shield.js"></script>
         <script type="text/javascript" src="scripts/classes/invaders.js"></script>
+        -->
+        <script type="text/javascript" src="invaders404.min.js"></script>
         
         <script type="text/javascript">
+        	var invaders;
         	window.addEventListener('load', function(){
-        		var invaders = new Invaders404({
+        		initInvaders404();
+        	});
+        	
+        	function play (){
+        		var splash = document.getElementById('splash');
+				splash.style.display = "none";
+				splash.style.opacity = 0;
+ 
+        		invaders.start();    		
+        	}
+        	
+        	function showSplash(){
+        		invaders.drawSplash(function (){
+					var splash = document.getElementById('splash');
+					splash.style.display = "block";
+					
+					setInterval(function(){
+						var opa = parseFloat(splash.style.opacity) || 0;
+						if (opa < 1){
+							splash.style.opacity = opa + 0.2;		
+						}		
+					}, 200);
+				});
+        	}
+        	
+        	function initInvaders404(){
+        		invaders = new Invaders404({
         			onLoose: function(){
-        				invaders.build();
+        				showSplash();
         			},
         			onWin: function(){
-        				alert('you won!');
+        				showSplash();
         			}
         		});
+        		
         		invaders.start();
-        	});
+        	}
         </script>
+        <style type="text/css">
+        	.ctn {
+        		width: 600px;
+        		height: 400px;
+        		position: relative;
+        	}    
+        	    	
+        	#splash {
+        		position: absolute;
+        		width: 600px;
+        		height: 400px;
+        		top: 0;
+        		left:0;
+        		background-image: url('fernetjs-invaders.png');
+				opacity: 0;
+        		display:none;
+        		z-index: 2;
+        		text-align: right;
+        		float: right;
+        	}
+        	
+        	#splash a {
+        		font-family: Verdana;
+        		font-size: 12pt;
+        		text-decoration: none;
+        		color: #323330;
+        		margin: 40px;
+        		line-height: 4;
+        	}
+        	
+        	#canvas {
+        		border-radius: 10px; 
+				-moz-border-radius: 10px; 
+				-webkit-border-radius: 10px; 
+				border: 1px solid silver;
+				background-color:#000;
+        	}
+        </style>
     </head>
     <body>
-        <h1>FernetJS Invaders!</h1>
-        <canvas id="canvas" width="600" height="400" style="border: solid 1px silver; background-color:#000">
-        	Space Invasor!
-        </canvas>
+        <h1>FernetJS Invaders 404</h1>
+        <div class="ctn">
+	        <canvas id="canvas" width="600" height="400">
+	        	FernetJS Invaders 404 - Not Found
+	        </canvas>
+	        <div id="splash">
+	        	<a href="#" onclick="play();" style="font-size: 26px;">Jugar!</a>
+	        	<br/>
+	        	<a href="https://github.com/pjnovas/invaders404" target="_blank">[c&oacute;digo fuente]</a>
+	        </div>
+        </div>
         <span id="fps"></span>
     </body>
 </html>
