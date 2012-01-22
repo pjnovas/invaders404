@@ -5,7 +5,6 @@
 /* TODO:
 
 - fix the removeEventListener
-- aliens on shield bricks
 
  */
 
@@ -14,7 +13,7 @@ var Invaders404 = Class.extend({
 		this.canvas = null;
 		this.ctx = null;
 
-		this.loopInterval = 50;
+		this.loopInterval = 30;
 		this.currentDir = [];
 
 		this.shield = {};
@@ -28,11 +27,12 @@ var Invaders404 = Class.extend({
 
 		this.isOnGame = false;
 
+		
 		/* FPS Info */
 		this.fps = 0
 		this.now = null;
 		this.lastUpdate = (new Date) * 1 - 1;
-		this.fpsFilter = 50;
+		this.fpsFilter = this.loopInterval;
 
 		var self = this;
 		var fpsOut = document.getElementById('fps');

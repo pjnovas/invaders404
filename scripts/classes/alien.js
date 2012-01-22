@@ -26,6 +26,9 @@ var Alien = DrawableElement.extend({
 		var sX = this.position.x;
 		if (sX < 20 || sX > (590 - this.size.width))
 			this.onWallCollision();
+			
+		var sY = this.position.y + this.size.height;
+		if (sY < 0) this.ship.collided();
 	},
 	draw: function(state){
 		if (!this.destroyed){
@@ -64,7 +67,7 @@ var Alien = DrawableElement.extend({
 		}
 		
 		if (checkCollision(this.shield.bricks)) return true;
-		//if (checkCollision(this.ship)) return true;
+		if (checkCollision([this.ship])) return true;
 	},
 	collided: function(){
 		this.destroyed = true;
