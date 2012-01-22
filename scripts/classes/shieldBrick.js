@@ -21,8 +21,10 @@ var ShieldBrick = DrawableElement.extend({
 			this._super(this.imgsState[this.state]);
 	   }
 	},
-	collided: function(){
-		this.state++;
+	collided: function(full){
+		if (full) this.state = 3;
+		else this.state++;
+
 		if (this.state > 2){
 			this.destroyed = true;
 		}	

@@ -11,6 +11,9 @@ var Alien = DrawableElement.extend({
 		
 		this.onWallCollision = options.onWallCollision || [];
 		
+		this.shield = options.shield || null;
+		this.ship = options.ship || null;
+		
 		this.destroyed = false;
 		this.shoots = [];
 	},
@@ -18,6 +21,8 @@ var Alien = DrawableElement.extend({
 		
 	},
 	update: function(){
+		this.hasCollision();
+		
 		var sX = this.position.x;
 		if (sX < 20 || sX > (590 - this.size.width))
 			this.onWallCollision();
@@ -32,6 +37,34 @@ var Alien = DrawableElement.extend({
 			this.destroy();
 			this.onDestroy(this);
 		}
+	},
+	hasCollision: function(){
+		var sX = this.position.x + this.size.width/2;
+		var sY = this.position.y + this.size.height*0.8;
+		
+		function checkCollision(arr){
+			var cb = arr;
+			var cbLen = cb.length;
+			
+			for(var i=0; i< cbLen; i++){
+				var cbO = cb[i];
+				
+				var cbL = cbO.position.x;
+				var cbT = cbO.position.y;
+				var cbR = cbL + cbO.size.width;
+				var cbD = cbT + cbO.size.height;
+				
+				if (sX >= cbL && sX <= cbR && sY >= cbT && sY <= cbD && !cbO.destroyed){
+					arr[i].collided(true);
+					return true;
+				}
+			}	
+			
+			return false;
+		}
+		
+		if (checkCollision(this.shield.bricks)) return true;
+		//if (checkCollision(this.ship)) return true;
 	},
 	collided: function(){
 		this.destroyed = true;

@@ -15,7 +15,7 @@ var Invasion = DrawableElement.extend({
 		this.ship = options.ship;
 		
 		this.MOVE_FACTOR = 10;
-		this.DOWN_FACTOR = 5;
+		this.DOWN_FACTOR = 12;
 		this.CURR_VEL = 600;
 		this.VEL_FACTOR = 50;
 		
@@ -72,6 +72,8 @@ var Invasion = DrawableElement.extend({
 						width: aSize,
 						height: aSize,
 						destroyedImg: this.deadAlienImgs,
+						shield: this.shield,
+						ship: this.ship,
 						onDestroy: function(alien){
 							for(var i=0; i<self.aliens.length; i++){
 								if (self.aliens[i] === alien){

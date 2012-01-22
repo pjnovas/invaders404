@@ -82,10 +82,6 @@ var Shoot = DrawableElement.extend({
 		}
 		
 		if (checkCollision(this.collateBricks)) return true;
-		
-		if (this.collateAliens != undefined){
-			if (checkCollision(this.collateAliens)) 
-				return true;
-		}
+		if (this.collateAliens && checkCollision(this.collateAliens)) return true;
 	}
 });
