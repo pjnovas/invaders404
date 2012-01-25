@@ -4,7 +4,7 @@ A code for fun, yet another custom HTML5 CANVAS 404 error page with the classic 
 ##How to Use
 Its easy, just instanciate the class and suscribe to the events:
 
-´´´js
+```js
 var invaders = new Invaders404({
 	onLoose: function(){
 		alert('You Loose!');
@@ -15,7 +15,7 @@ var invaders = new Invaders404({
 });
 
 invaders.start(); //call it as many times you want, it cleans the browser memory ;)
-´´´
+```
 
 - Browser compatibility: any browser which supports HTML5
 
@@ -24,7 +24,7 @@ Prototypal OOP-like code in JavaScript - thanks to John Resig (http://ejohn.org/
 
 It has a prove of concept to use no images at all. They are all generated on the fly from a JSON array map of numbers; drawing them first to a canvas and then using canvas.toDataURL("image/png") for better performance (classes/ImageCreator.js).
 
-´´´js
+```js
 // The Alien Crab JSON array
 // 0 = transparent | 1 = static | 2 & 3 = animation states
 ImageMapper.AlienCrab = function(){
@@ -43,11 +43,11 @@ ImageMapper.AlienCrab = function(){
 		[0,3,0,2,2,0,2,2,0,3,0]
 	];
 };
-´´´
+```
 
 It has also some JSON arrays to configure the Aliens Invasion and the Shield disposition...
 
-´´´js
+```js
 // The Aliens Invasion JSON array making the "404"
 // 1 = Alien Squid | 2 = Alien Crab
 ImageMapper.Invasion = function(){
@@ -61,9 +61,9 @@ ImageMapper.Invasion = function(){
 		[2,2,2,2,2,2,2,2,2,2,2,2,2]
 	];
 };
-´´´
+```
 
-´´´js
+```js
 // The Shield JSON array making the "NOT FOUND"
 // 1 = Shield brick
 ImageMapper.Shield = function(){
@@ -75,7 +75,7 @@ ImageMapper.Shield = function(){
 		[1,0,0,1,0,1,1,1,0,0,1,0,0,0,0,0,1,0,0,0,1,1,1,0,1,1,1,0,1,0,0,1,0,1,1,0]
 	];
 };
-´´´
+```
 
 ... so try it out, Fork me and have fun!
 
