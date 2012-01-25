@@ -1,8 +1,9 @@
 #Invaders 404
-
 A code for fun, yet another custom HTML5 CANVAS 404 error page with the classic game Space Invaders made in JavaScript.
 
 ##How to Use
+Its easy, just instanciate the class and suscribe to the events:
+
 ´´´js
 var invaders = new Invaders404({
 	onLoose: function(){
@@ -13,15 +14,12 @@ var invaders = new Invaders404({
 	}
 });
 
-invaders.start(); //call it as many times you want, it cleans the browser memmory ;)
-
-});
+invaders.start(); //call it as many times you want, it cleans the browser memory ;)
 ´´´
 
 - Browser compatibility: any browser which supports HTML5
 
 ##About the code
-
 Prototypal OOP-like code in JavaScript - thanks to John Resig (http://ejohn.org/) for the utility to make inheritance simplier: classes/class.js.
 
 It has a prove of concept to use no images at all. They are all generated on the fly from a JSON array map of numbers; drawing them first to a canvas and then using canvas.toDataURL("image/png") for better performance (classes/ImageCreator.js).
