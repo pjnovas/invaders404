@@ -139,8 +139,46 @@ var Invaders404 = Class.extend({
 
 			return null;
 		}
+		
+		function setGamePadAction() {
+			var keysPressed = [];
+			
+			if (gamepad.buttons.A_Button || gamepad.buttons.X_Button || 
+				gamepad.buttons.B_Button || gamepad.buttons.Y_Button)
+				keysPressed.push(Controls.Shoot);
+				
+			if (gamepad.axes.Left_Stick_X || gamepad.axes.Pad_Left)
+				keysPressed.push(Controls.Left);
+				
+			if (gamepad.axes.Right_Stick_X || gamepad.axes.Pad_Right)
+				keysPressed.push(Controls.Right);
 
-
+			for(var i=0; i< keysPressed.length; i++){
+				if(self.currentDir.indexOf(keysPressed[i]) === -1)
+					self.currentDir.push(keysPressed[i]);
+			}
+		}
+		
+		window.addEventListener("MozGamepadAxisMove", setGamePadAction , false);
+		window.addEventListener("MozGamepadButtonDown", setGamePadAction , false);
+		window.addEventListener("MozGamepadButtonUp", function(){
+			var pos = -1;
+			
+			if (!gamepad.axes.Left_Stick_X && !gamepad.axes.Pad_Left){
+				pos = self.currentDir.indexOf(Controls.Left);
+				if(pos > -1) self.currentDir.splice(pos, 1);
+			}
+			
+			if (!gamepad.axes.Right_Stick_X && !gamepad.axes.Pad_Right){
+				pos = self.currentDir.indexOf(Controls.Right);
+				if(pos > -1) self.currentDir.splice(pos, 1);
+			}
+					
+		} , false);
+		
+		
+		/* REMOVE FOR FAKE GAMEPAD */
+		
 		document.addEventListener('keydown', function(event) {
 			if(self.isOnGame) {
 				var key = event.keyCode;
@@ -168,6 +206,8 @@ var Invaders404 = Class.extend({
 					self.currentDir.splice(pos, 1);
 			}
 		});
+		
+		/* END REMOVE FOR FAKE GAMEPAD */
 	},
 	unbindControls : function(params) {
 		document.removeEventListener('keydown', function() {

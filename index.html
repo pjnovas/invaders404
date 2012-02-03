@@ -5,7 +5,6 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>FernetJS Invaders</title>
         
-        <!--
         <script type="text/javascript" src="scripts/classes/class.js"></script>
         <script type="text/javascript" src="scripts/classes/static.js"></script>
         <script type="text/javascript" src="scripts/classes/imageMapper.js"></script>
@@ -19,11 +18,31 @@
         <script type="text/javascript" src="scripts/classes/shieldBrick.js"></script>
         <script type="text/javascript" src="scripts/classes/shield.js"></script>
         <script type="text/javascript" src="scripts/classes/invaders.js"></script>
-        -->
-        <script type="text/javascript" src="invaders404.min.js"></script>
         
+        <!--<script type="text/javascript" src="invaders404.min.js"></script>-->
+        
+        <script type="text/javascript" src="scripts/classes/input.js"></script>
+        
+<!-- FAKE GAME PAD         
+        <script type="text/javascript" src="scripts/input.fakedevice.js"></script>
+-->
+
         <script type="text/javascript">
-        	var invaders;
+        	var invaders,
+        		gamepad;
+        	
+        	window.addEventListener("MozGamepadConnected", function(e) {
+			  gamepad = new Input.Device(e.gamepad);
+			});
+			
+/* FAKE GAME PAD 
+			function connect(){
+				gamepad = new Input.Device(new Input.FakeDevice());
+				window.removeEventListener("keydown", connect, false);
+			}
+			window.addEventListener("keydown", connect, false);
+*/			
+
         	window.addEventListener('load', function(){
         		initInvaders404();
         	});
