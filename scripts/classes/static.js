@@ -1,6 +1,3 @@
-/**
- * @author pjnovas
- */
 
 function Controls() { throw 'Controls class is Static.'; };
 Controls.Left = "Left";
