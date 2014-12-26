@@ -4,8 +4,9 @@ A code for fun, yet another custom HTML5 CANVAS 404 error page with the classic 
 ##How to Use
 Its easy, just instanciate the class and suscribe to the events:
 
-```js
+```javascript
 var invaders = new Invaders404({
+	canvasId: 'game-canvas',
 	onLoose: function(){
 		alert('You Loose!');
 	},
@@ -14,7 +15,7 @@ var invaders = new Invaders404({
 	}
 });
 
-invaders.start(); //call it as many times you want, it cleans the browser memory ;)
+invaders.start();
 ```
 
 - Browser compatibility: any browser which supports HTML5
